@@ -1,0 +1,55 @@
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+    --text-hero: 2.5rem;        
+  --text-section: 1.5rem;     
+  --text-main: 1.1rem; 
+  --text-body: 1rem;        
+  --text-small: 0.875rem;
+  
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 rounded-full hover:bg-gray-300 text-white text-main font-bold px-10 py-5;
+  }
+  .btn-dark {
+    @apply bg-black rounded-full hover:bg-gray-300 text-white text-main font-bold px-10 py-5 self-start;
+  }
+  .btn-learn {
+    @apply bg-white rounded-sm text-main font-medium px-6 py-5
+  }
+  .heading {
+    @apply text-6xl font-semibold
+  }
+  .subheading {
+    @apply 
+      text-5xl
+    
+  }
+  .sub-subheading {
+    @apply text-3xl font-semibold
+  }
+}
+@layer base {
+  input {
+    @apply w-full max-w-md px-4 py-3 border border-gray-600 rounded-lg
+           focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
