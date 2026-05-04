@@ -67,6 +67,7 @@ const Explore = () => {
 
             {/* Filters */}
             <div className="max-w-7xl mx-auto px-6 md:px-8 mb-6">
+            <div className="flex items-center justify-between">
                 <div className="flex gap-2">
                     {filters.map((f) => (
                         <button
@@ -82,8 +83,14 @@ const Explore = () => {
                         </button>
                     ))}
                 </div>
-                <Link to="/add-crypto" className="bg-[#0052ff] text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-[#004bd6] transition-all"> + Add Crypto </Link>
+                <Link
+                    to="/add-crypto"
+                    className="bg-[#0052ff] text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-[#004bd6] transition-all"
+                >
+                    + Add Crypto
+                </Link>
             </div>
+        </div>
 
             {/* Table */}
             <div className="max-w-7xl mx-auto px-6 md:px-8 pb-24">
