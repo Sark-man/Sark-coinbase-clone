@@ -3,6 +3,21 @@ import { Link } from 'react-router-dom';
 import { SiBitcoin, SiEthereum, SiTether, SiBinance, SiXrp } from 'react-icons/si';
 import CryptoRow from './CryptoRow';
 import Button from '../common/Button';
+import API_BASE from '../../api';
+
+const getCoinIcon = (symbol) => {
+    const s = symbol?.toLowerCase();
+    if (s === 'btc') return <SiBitcoin className="text-[#F7931A] text-2xl" />;
+    if (s === 'eth') return <SiEthereum className="text-[#627EEA] text-2xl" />;
+    if (s === 'usdt') return <SiTether className="text-[#26A17B] text-2xl" />;
+    if (s === 'bnb') return <SiBinance className="text-[#F3BA2F] text-2xl" />;
+    if (s === 'xrp') return <SiXrp className="text-white text-2xl" />;
+    return (
+        <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-[10px] uppercase font-bold text-white">
+            {symbol?.substring(0, 2)}
+        </div>
+    );
+};
 
 const MarketData = () => {
     const [activeFilter, setActiveFilter] = useState('tradable');
@@ -10,54 +25,42 @@ const MarketData = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const getCoinIcon = (symbol) => {
-        const s = symbol.toLowerCase();
-        if (s === 'btc') return <SiBitcoin className="text-[#F7931A] text-2xl" />;
-        if (s === 'eth') return <SiEthereum className="text-[#627EEA] text-2xl" />;
-        if (s === 'usdt') return <SiTether className="text-[#26A17B] text-2xl" />;
-        if (s === 'bnb') return <SiBinance className="text-[#F3BA2F] text-2xl" />;
-        if (s === 'xrp') return <SiXrp className="text-white text-2xl" />;
-        return <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-[10px] uppercase font-bold text-white">{symbol.substring(0, 2)}</div>;
-    };
-
     useEffect(() => {
         const fetchMarketData = async () => {
+            setIsLoading(true);
             setError(null);
             try {
-                let url = '';
-                if (activeFilter === 'tradable') {
-                    url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false';
-                } else if (activeFilter === 'gainers') {
-                    url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=5&page=1&sparkline=false';
-                } else if (activeFilter === 'new') {
-                    url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=gecko_desc&per_page=5&page=1&sparkline=false';
+                let endpoint = '';
+                if (activeFilter === 'tradable') endpoint = '/crypto';
+                else if (activeFilter === 'gainers') endpoint = '/crypto/gainers';
+                else if (activeFilter === 'new') endpoint = '/crypto/new';
+
+                const res = await fetch(`${API_BASE}${endpoint}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    const mapped = data.data.slice(0, 5).map((coin) => ({
+                        name: coin.name,
+                        symbol: coin.symbol,
+                        icon: getCoinIcon(coin.symbol),
+                        price: coin.price.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }),
+                        change: coin.change24h.toFixed(2),
+                    }));
+                    setAssets(mapped);
+                } else {
+                    setError('Failed to load data.');
                 }
-
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('API limit reached or network error');
-                const data = await response.json();
-
-                const mappedData = data.map(coin => ({
-                    name: coin.name,
-                    symbol: coin.symbol,
-                    icon: getCoinIcon(coin.symbol),
-                    price: coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-                    change: coin.price_change_percentage_24h ? coin.price_change_percentage_24h.toFixed(2) : '0.00'
-                }));
-
-                setAssets(mappedData);
-                setIsLoading(false);
             } catch (err) {
-                console.error(err);
                 setError('Failed to load data. Please try again later.');
+            } finally {
+                setIsLoading(false);
             }
         };
 
-        setIsLoading(true);
         fetchMarketData();
-
-        const interval = setInterval(fetchMarketData, 30000); // Refresh every 30 seconds
-        return () => clearInterval(interval);
     }, [activeFilter]);
 
     return (
@@ -75,7 +78,7 @@ const MarketData = () => {
                         Simply and securely buy, sell, and manage hundreds of cryptocurrencies.
                     </p>
                     <div className="flex justify-start text-left">
-                        <Button as={Link} to="/signup" variant="black">
+                        <Button to="/explore" variant="black">
                             See more assets
                         </Button>
                     </div>

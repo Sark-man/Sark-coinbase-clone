@@ -1,6 +1,7 @@
 import React from 'react';
 import baseAppMockup from '../../assets/base_app.avif';
 import logo from '../../assets/logo.svg';
+import { Link } from 'react-router-dom';
 
 const BaseApp = () => {
     return (
@@ -39,9 +40,9 @@ const BaseApp = () => {
                 </div>
 
                 <div className="flex justify-start">
-                    <button className="bg-black text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-bold text-base md:text-lg hover:bg-gray-800 transition-all active:scale-95 w-fit">
-                        Learn more
-                    </button>
+                    <Link to = "/learn" className="bg-black text-white px-8 py-3 rounded-full font-bold text-base hover:bg-gray-800 transition-all duration-200 active:scale-95">
+                                Learn More
+                            </Link>
                 </div>
             </div>
 

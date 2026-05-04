@@ -36,7 +36,15 @@ import {
     IoGlobeOutline
 } from 'react-icons/io5';
 
+
 const Navbar = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) setUser(JSON.parse(storedUser));
+    }, []);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isIndividualsOpen, setIsIndividualsOpen] = useState(false);
     const [isMenuPinned, setIsMenuPinned] = useState(false);
@@ -271,7 +279,7 @@ const Navbar = () => {
                     </Link>
 
                     <nav className="hidden lg:flex items-center gap-6 text-black h-full flex-nowrap">
-                        <a href="#" className="bg-whitespace text-black px-5 py-2.5 rounded-full font-bold hover:bg-gray-100 transition-all text-sm md:text-base whitespace-nowrap">Cryptocurrencies</a>
+                        <Link to="/explore" className="bg-whitespace text-black px-5 py-2.5 rounded-full font-bold hover:bg-gray-100 transition-all text-sm md:text-base whitespace-nowrap">Cryptocurrencies</Link>
 
                         {/* Individuals Mega-Menu Trigger */}
                         <div
@@ -743,14 +751,25 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                   <div className="flex items-center gap-2 md:gap-4">
-                        <Link to="/signin" className="bg-[#f0f3f6] text-black px-5 py-2.5 rounded-full font-bold hover:opacity-80 transition-all text-sm md:text-base whitespace-nowrap">
-                            Sign in
-                        </Link>
-                        <Link to="/signup" className="bg-[#0052ff] text-white px-5 py-2.5 rounded-full font-bold hover:bg-[#004bd6] transition-all text-sm md:text-base whitespace-nowrap shadow-sm text-center">
-                            Sign up
-                        </Link>
-                    </div>
+                  <div className="flex items-center gap-2 md:gap-4">
+    {user ? (
+        <Link
+            to="/profile"
+            className="bg-[#0052ff] text-white px-5 py-2.5 rounded-full font-bold hover:bg-[#004bd6] transition-all text-sm md:text-base whitespace-nowrap shadow-sm"
+        >
+            {user.name.split(' ')[0]}
+        </Link>
+    ) : (
+        <>
+            <Link to="/signin" className="bg-[#f0f3f6] text-black px-5 py-2.5 rounded-full font-bold hover:opacity-80 transition-all text-sm md:text-base whitespace-nowrap">
+                Sign in
+            </Link>
+            <Link to="/signup" className="bg-[#0052ff] text-white px-5 py-2.5 rounded-full font-bold hover:bg-[#004bd6] transition-all text-sm md:text-base whitespace-nowrap shadow-sm text-center">
+                Sign up
+            </Link>
+        </>
+    )}
+</div>
 
                     {/* Mobile Menu Toggle */}
                     <button
