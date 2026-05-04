@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import coinbaseBlack from '../assets/coinbase-black.png';
 import personalIcon from '../assets/signup/personal.svg';
 import businessIcon from '../assets/signup/business.svg';
 import developerIcon from '../assets/signup/developer.svg';
 import { FaCheck } from 'react-icons/fa6';
 
-
 const Signup = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedType, setSelectedType] = useState('personal');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 1500); // 1.5s splash screen
+        }, 1500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -25,7 +25,6 @@ const Signup = () => {
             </div>
         );
     }
-
 
     const accountTypes = [
         {
@@ -50,44 +49,35 @@ const Signup = () => {
 
     return (
         <div className="min-h-screen bg-black text-white flex flex-col items-center px-4 py-12 relative overflow-y-auto">
-            {/* Top Branding - Fixed to Top Left Corner */}
             <div className="absolute top-6 left-6 md:top-8 md:left-8">
                 <Link to="/">
                     <img src={coinbaseBlack} alt="Coinbase" className="h-5 md:h-6" />
                 </Link>
             </div>
 
-            {/* Main Content - Narrow and shifted down */}
             <div className="w-full max-w-[400px] mx-auto flex flex-col items-center pt-24 md:pt-32">
                 <h1 className="text-2xl md:text-3xl font-extrabold text-left w-full mb-8 tracking-tight leading-tight">
                     What kind of account are you creating?
                 </h1>
 
-                <div className="flex flex-col gap-3 w-full pb-12">
+                <div className="flex flex-col gap-3 w-full pb-6">
                     {accountTypes.map((type) => (
                         <div
                             key={type.id}
                             onClick={() => setSelectedType(type.id)}
-                            className={`relative cursor-pointer group rounded-[12px] p-4 transition-all duration-300 border-2 w-full flex items-center gap-4 ${selectedType === type.id
+                            className={`relative cursor-pointer group rounded-[12px] p-4 transition-all duration-300 border-2 w-full flex items-center gap-4 ${
+                                selectedType === type.id
                                     ? 'bg-[#121212] border-[#0052ff]'
                                     : 'bg-black border-white/10 hover:border-white/20'
-                                }`}
+                            }`}
                         >
                             <div className="w-12 h-12 flex items-center justify-center shrink-0">
-                                <img
-                                    src={type.icon}
-                                    alt={type.title}
-                                    className="w-full h-full object-contain"
-                                />
+                                <img src={type.icon} alt={type.title} className="w-full h-full object-contain" />
                             </div>
-
                             <div className="flex flex-col flex-grow text-left">
                                 <h3 className="text-base font-bold mb-0.5">{type.title}</h3>
-                                <p className="text-gray-500 text-xs font-medium leading-relaxed">
-                                    {type.desc}
-                                </p>
+                                <p className="text-gray-500 text-xs font-medium leading-relaxed">{type.desc}</p>
                             </div>
-
                             {selectedType === type.id && (
                                 <div className="w-5 h-5 bg-[#0052ff] rounded-full flex items-center justify-center shrink-0">
                                     <FaCheck className="text-white text-[9px]" />
@@ -96,6 +86,13 @@ const Signup = () => {
                         </div>
                     ))}
                 </div>
+
+                <button
+                    onClick={() => navigate('/signup2')}
+                    className="w-full py-4 rounded-full font-bold text-lg bg-[#0052ff] text-white hover:bg-[#004bd6] transition-all shadow-lg active:scale-[0.98] mt-2"
+                >
+                    Continue
+                </button>
             </div>
         </div>
     );
