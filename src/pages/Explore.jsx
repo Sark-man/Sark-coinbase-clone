@@ -82,6 +82,7 @@ const Explore = () => {
                         </button>
                     ))}
                 </div>
+                <Link to="/add-crypto" className="bg-[#0052ff] text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-[#004bd6] transition-all"> + Add Crypto </Link>
             </div>
 
             {/* Table */}

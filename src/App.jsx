@@ -10,6 +10,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SignUp2 from "./pages/SignUp2";
 import Profile from "./pages/profile";
+import AddCrypto from "./pages/AddCrypto";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signup2" element={<SignUp2 />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/add-crypto" element={<AddCrypto />} />
         
 
       </Routes>
